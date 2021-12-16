@@ -1,3 +1,3 @@
-module xjson
+module json
 
 go 1.17

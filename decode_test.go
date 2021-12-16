@@ -838,14 +838,14 @@ var unmarshalTests = []unmarshalTest{
 
 	// issue 15146.
 	// invalid inputs in wrongStringTests below.
-	{in: `{"B":"true"}`, ptr: new(B), out: B{true}, golden: true},
-	{in: `{"B":"false"}`, ptr: new(B), out: B{false}, golden: true},
-	{in: `{"B": "maybe"}`, ptr: new(B), err: errors.New(`json: invalid use of ,string struct tag, trying to unmarshal "maybe" into bool`)},
-	{in: `{"B": "tru"}`, ptr: new(B), err: errors.New(`json: invalid use of ,string struct tag, trying to unmarshal "tru" into bool`)},
-	{in: `{"B": "False"}`, ptr: new(B), err: errors.New(`json: invalid use of ,string struct tag, trying to unmarshal "False" into bool`)},
-	{in: `{"B": "null"}`, ptr: new(B), out: B{false}},
-	{in: `{"B": "nul"}`, ptr: new(B), err: errors.New(`json: invalid use of ,string struct tag, trying to unmarshal "nul" into bool`)},
-	{in: `{"B": [2, 3]}`, ptr: new(B), err: errors.New(`json: invalid use of ,string struct tag, trying to unmarshal unquoted value into bool`)},
+	{in: `{"b":"true"}`, ptr: new(B), out: B{true}, golden: true},
+	{in: `{"b":"false"}`, ptr: new(B), out: B{false}, golden: true},
+	{in: `{"b": "maybe"}`, ptr: new(B), err: errors.New(`json: invalid use of ,string struct tag, trying to unmarshal "maybe" into bool`)},
+	{in: `{"b": "tru"}`, ptr: new(B), err: errors.New(`json: invalid use of ,string struct tag, trying to unmarshal "tru" into bool`)},
+	{in: `{"b": "False"}`, ptr: new(B), err: errors.New(`json: invalid use of ,string struct tag, trying to unmarshal "False" into bool`)},
+	{in: `{"b": "null"}`, ptr: new(B), out: B{false}},
+	{in: `{"b": "nul"}`, ptr: new(B), err: errors.New(`json: invalid use of ,string struct tag, trying to unmarshal "nul" into bool`)},
+	{in: `{"b": [2, 3]}`, ptr: new(B), err: errors.New(`json: invalid use of ,string struct tag, trying to unmarshal unquoted value into bool`)},
 
 	// additional tests for disallowUnknownFields
 	{
@@ -1072,7 +1072,8 @@ func TestMarshalEmbeds(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := "{\"Level0\":1,\"Level1b\":2,\"Level1c\":3,\"Level1a\":5,\"LEVEL1B\":6,\"e\":{\"Level1a\":8,\"Level1b\":9,\"Level1c\":10,\"Level1d\":11,\"x\":12},\"Loop1\":13,\"Loop2\":14,\"X\":15,\"Y\":16,\"Z\":17,\"Q\":18}"
+	// want := "{\"Level0\":1,\"Level1b\":2,\"Level1c\":3,\"Level1a\":5,\"LEVEL1B\":6,\"e\":{\"Level1a\":8,\"Level1b\":9,\"Level1c\":10,\"Level1d\":11,\"x\":12},\"Loop1\":13,\"Loop2\":14,\"X\":15,\"Y\":16,\"Z\":17,\"Q\":18}"
+	want := "{\"level0\":1,\"level1b\":2,\"level1c\":3,\"Level1a\":5,\"LEVEL1B\":6,\"e\":{\"level1a\":8,\"level1b\":9,\"level1c\":10,\"level1d\":11,\"x\":12},\"loop1\":13,\"loop2\":14,\"x\":15,\"y\":16,\"z\":17,\"q\":18}"
 	if string(b) != want {
 		t.Errorf("Wrong marshal result.\n got: %q\nwant: %q", b, want)
 	}
@@ -1456,24 +1457,24 @@ var pallValue = All{
 }
 
 var allValueIndent = `{
-	"Bool": true,
-	"Int": 2,
-	"Int8": 3,
-	"Int16": 4,
-	"Int32": 5,
-	"Int64": 6,
-	"Uint": 7,
-	"Uint8": 8,
-	"Uint16": 9,
-	"Uint32": 10,
-	"Uint64": 11,
-	"Uintptr": 12,
-	"Float32": 14.1,
-	"Float64": 15.1,
+	"bool": true,
+	"int": 2,
+	"int8": 3,
+	"int16": 4,
+	"int32": 5,
+	"int64": 6,
+	"uint": 7,
+	"uint8": 8,
+	"uint16": 9,
+	"uint32": 10,
+	"uint64": 11,
+	"uintptr": 12,
+	"float32": 14.1,
+	"float64": 15.1,
 	"bar": "foo",
 	"bar2": "foo2",
-	"IntStr": "42",
-	"UintptrStr": "44",
+	"intStr": "42",
+	"uintptrStr": "44",
 	"PBool": null,
 	"PInt": null,
 	"PInt8": null,
@@ -1488,85 +1489,85 @@ var allValueIndent = `{
 	"PUintptr": null,
 	"PFloat32": null,
 	"PFloat64": null,
-	"String": "16",
+	"string": "16",
 	"PString": null,
-	"Map": {
+	"map": {
 		"17": {
-			"Tag": "tag17"
+			"tag": "tag17"
 		},
 		"18": {
-			"Tag": "tag18"
+			"tag": "tag18"
 		}
 	},
-	"MapP": {
+	"mapP": {
 		"19": {
-			"Tag": "tag19"
+			"tag": "tag19"
 		},
 		"20": null
 	},
 	"PMap": null,
 	"PMapP": null,
-	"EmptyMap": {},
-	"NilMap": null,
-	"Slice": [
+	"emptyMap": {},
+	"nilMap": null,
+	"slice": [
 		{
-			"Tag": "tag20"
+			"tag": "tag20"
 		},
 		{
-			"Tag": "tag21"
+			"tag": "tag21"
 		}
 	],
-	"SliceP": [
+	"sliceP": [
 		{
-			"Tag": "tag22"
+			"tag": "tag22"
 		},
 		null,
 		{
-			"Tag": "tag23"
+			"tag": "tag23"
 		}
 	],
 	"PSlice": null,
 	"PSliceP": null,
-	"EmptySlice": [],
-	"NilSlice": null,
-	"StringSlice": [
+	"emptySlice": [],
+	"nilSlice": null,
+	"stringSlice": [
 		"str24",
 		"str25",
 		"str26"
 	],
-	"ByteSlice": "Gxwd",
-	"Small": {
-		"Tag": "tag30"
+	"byteSlice": "Gxwd",
+	"small": {
+		"tag": "tag30"
 	},
 	"PSmall": {
-		"Tag": "tag31"
+		"tag": "tag31"
 	},
 	"PPSmall": null,
-	"Interface": 5.2,
+	"interface": 5.2,
 	"PInterface": null
 }`
 
 var allValueCompact = strings.Map(noSpace, allValueIndent)
 
 var pallValueIndent = `{
-	"Bool": false,
-	"Int": 0,
-	"Int8": 0,
-	"Int16": 0,
-	"Int32": 0,
-	"Int64": 0,
-	"Uint": 0,
-	"Uint8": 0,
-	"Uint16": 0,
-	"Uint32": 0,
-	"Uint64": 0,
-	"Uintptr": 0,
-	"Float32": 0,
-	"Float64": 0,
+	"bool": false,
+	"int": 0,
+	"int8": 0,
+	"int16": 0,
+	"int32": 0,
+	"int64": 0,
+	"uint": 0,
+	"uint8": 0,
+	"uint16": 0,
+	"uint32": 0,
+	"uint64": 0,
+	"uintptr": 0,
+	"float32": 0,
+	"float64": 0,
 	"bar": "",
 	"bar2": "",
-        "IntStr": "0",
-	"UintptrStr": "0",
+        "intStr": "0",
+	"uintptrStr": "0",
 	"PBool": true,
 	"PInt": 2,
 	"PInt8": 3,
@@ -1581,57 +1582,57 @@ var pallValueIndent = `{
 	"PUintptr": 12,
 	"PFloat32": 14.1,
 	"PFloat64": 15.1,
-	"String": "",
+	"string": "",
 	"PString": "16",
-	"Map": null,
-	"MapP": null,
+	"map": null,
+	"mapP": null,
 	"PMap": {
 		"17": {
-			"Tag": "tag17"
+			"tag": "tag17"
 		},
 		"18": {
-			"Tag": "tag18"
+			"tag": "tag18"
 		}
 	},
 	"PMapP": {
 		"19": {
-			"Tag": "tag19"
+			"tag": "tag19"
 		},
 		"20": null
 	},
-	"EmptyMap": null,
-	"NilMap": null,
-	"Slice": null,
-	"SliceP": null,
+	"emptyMap": null,
+	"nilMap": null,
+	"slice": null,
+	"sliceP": null,
 	"PSlice": [
 		{
-			"Tag": "tag20"
+			"tag": "tag20"
 		},
 		{
-			"Tag": "tag21"
+			"tag": "tag21"
 		}
 	],
 	"PSliceP": [
 		{
-			"Tag": "tag22"
+			"tag": "tag22"
 		},
 		null,
 		{
-			"Tag": "tag23"
+			"tag": "tag23"
 		}
 	],
-	"EmptySlice": null,
-	"NilSlice": null,
-	"StringSlice": null,
-	"ByteSlice": null,
-	"Small": {
-		"Tag": ""
+	"emptySlice": null,
+	"nilSlice": null,
+	"stringSlice": null,
+	"byteSlice": null,
+	"small": {
+		"tag": ""
 	},
 	"PSmall": null,
 	"PPSmall": {
-		"Tag": "tag31"
+		"tag": "tag31"
 	},
-	"Interface": null,
+	"interface": null,
 	"PInterface": 5.2
 }`
 

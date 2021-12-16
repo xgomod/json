@@ -133,13 +133,13 @@ func TestEncoderSetEscapeHTML(t *testing.T) {
 		{`"<&>"`, "<&>", `"\u003c\u0026\u003e"`, `"<&>"`},
 		{
 			"tagStruct", tagStruct,
-			`{"\u003c\u003e\u0026#! ":0,"Invalid":0}`,
-			`{"<>&#! ":0,"Invalid":0}`,
+			`{"\u003c\u003e\u0026#! ":0,"invalid":0}`,
+			`{"<>&#! ":0,"invalid":0}`,
 		},
 		{
 			`"<str>"`, marshalerStruct,
-			`{"NonPtr":"\u003cstr\u003e","Ptr":"\u003cstr\u003e"}`,
-			`{"NonPtr":"<str>","Ptr":"<str>"}`,
+			`{"nonPtr":"\u003cstr\u003e","ptr":"\u003cstr\u003e"}`,
+			`{"nonPtr":"<str>","ptr":"<str>"}`,
 		},
 		{
 			"stringOption", stringOption,
@@ -244,7 +244,7 @@ func TestRawMessage(t *testing.T) {
 		Y  float32
 	}
 	const raw = `["\u0056",null]`
-	const msg = `{"X":0.1,"Id":["\u0056",null],"Y":0.2}`
+	const msg = `{"x":0.1,"id":["\u0056",null],"y":0.2}`
 	err := Unmarshal([]byte(msg), &data)
 	if err != nil {
 		t.Fatalf("Unmarshal: %v", err)
@@ -268,7 +268,7 @@ func TestNullRawMessage(t *testing.T) {
 		IdPtr *RawMessage
 		Y     float32
 	}
-	const msg = `{"X":0.1,"Id":null,"IdPtr":null,"Y":0.2}`
+	const msg = `{"x":0.1,"id":null,"idPtr":null,"y":0.2}`
 	err := Unmarshal([]byte(msg), &data)
 	if err != nil {
 		t.Fatalf("Unmarshal: %v", err)

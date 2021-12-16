@@ -95,11 +95,11 @@ func TestRoundtripStringTag(t *testing.T) {
 				NumberStr:  "46",
 			},
 			want: `{
-				"BoolStr": "true",
-				"IntStr": "42",
-				"UintptrStr": "44",
-				"StrStr": "\"xzbit\"",
-				"NumberStr": "46"
+				"boolStr": "true",
+				"intStr": "42",
+				"uintptrStr": "44",
+				"strStr": "\"xzbit\"",
+				"numberStr": "46"
 			}`,
 		},
 		{
@@ -110,11 +110,11 @@ func TestRoundtripStringTag(t *testing.T) {
 				NumberStr: "0", // just to satisfy the roundtrip
 			},
 			want: `{
-				"BoolStr": "false",
-				"IntStr": "0",
-				"UintptrStr": "0",
-				"StrStr": "\"\\u0008\\u000c\\n\\r\\t\\\"\\\\\"",
-				"NumberStr": "0"
+				"boolStr": "false",
+				"intStr": "0",
+				"uintptrStr": "0",
+				"strStr": "\"\\u0008\\u000c\\n\\r\\t\\\"\\\\\"",
+				"numberStr": "0"
 			}`,
 		},
 	}
@@ -319,7 +319,7 @@ func TestRefValMarshal(t *testing.T) {
 		V2: 15,
 		V3: new(ValText),
 	}
-	const want = `{"R0":"ref","R1":"ref","R2":"\"ref\"","R3":"\"ref\"","V0":"val","V1":"val","V2":"\"val\"","V3":"\"val\""}`
+	const want = `{"r0":"ref","r1":"ref","r2":"\"ref\"","r3":"\"ref\"","v0":"val","v1":"val","v2":"\"val\"","v3":"\"val\""}`
 	b, err := Marshal(&s)
 	if err != nil {
 		t.Fatalf("Marshal: %v", err)
@@ -403,7 +403,7 @@ func TestAnonymousFields(t *testing.T) {
 			)
 			return S{S1{1, 2}, S2{3, 4}, 5, 6}
 		},
-		want: `{"X":6}`,
+		want: `{"x":6}`,
 	}, {
 		// Unexported embedded field of non-struct type should not be serialized.
 		label: "UnexportedEmbeddedInt",
@@ -425,7 +425,7 @@ func TestAnonymousFields(t *testing.T) {
 			)
 			return S{5}
 		},
-		want: `{"MyInt":5}`,
+		want: `{"myInt":5}`,
 	}, {
 		// Unexported embedded field of pointer to non-struct type
 		// should not be serialized.
@@ -453,7 +453,7 @@ func TestAnonymousFields(t *testing.T) {
 			*s.MyInt = 5
 			return s
 		},
-		want: `{"MyInt":5}`,
+		want: `{"myInt":5}`,
 	}, {
 		// Exported fields of embedded structs should have their
 		// exported fields be serialized regardless of whether the struct types
@@ -470,7 +470,7 @@ func TestAnonymousFields(t *testing.T) {
 			)
 			return S{s1{1, 2}, S2{3, 4}}
 		},
-		want: `{"X":2,"Y":4}`,
+		want: `{"x":2,"y":4}`,
 	}, {
 		// Exported fields of pointers to embedded structs should have their
 		// exported fields be serialized regardless of whether the struct types
@@ -487,7 +487,7 @@ func TestAnonymousFields(t *testing.T) {
 			)
 			return S{&s1{1, 2}, &S2{3, 4}}
 		},
-		want: `{"X":2,"Y":4}`,
+		want: `{"x":2,"y":4}`,
 	}, {
 		// Exported fields on embedded unexported structs at multiple levels
 		// of nesting should still be serialized.
@@ -513,7 +513,7 @@ func TestAnonymousFields(t *testing.T) {
 			)
 			return S{s1{1, 2, s2{3, 4}}, 6}
 		},
-		want: `{"MyInt1":1,"MyInt2":3}`,
+		want: `{"myInt1":1,"myInt2":3}`,
 	}, {
 		// If an anonymous struct pointer field is nil, we should ignore
 		// the embedded fields behind it. Not properly doing so may
@@ -598,13 +598,13 @@ func TestNilMarshal(t *testing.T) {
 		{v: []string(nil), want: `null`},
 		{v: map[string]string(nil), want: `null`},
 		{v: []byte(nil), want: `null`},
-		{v: struct{ M string }{"gopher"}, want: `{"M":"gopher"}`},
-		{v: struct{ M Marshaler }{}, want: `{"M":null}`},
-		{v: struct{ M Marshaler }{(*nilJSONMarshaler)(nil)}, want: `{"M":"0zenil0"}`},
-		{v: struct{ M interface{} }{(*nilJSONMarshaler)(nil)}, want: `{"M":null}`},
-		{v: struct{ M encoding.TextMarshaler }{}, want: `{"M":null}`},
-		{v: struct{ M encoding.TextMarshaler }{(*nilTextMarshaler)(nil)}, want: `{"M":"0zenil0"}`},
-		{v: struct{ M interface{} }{(*nilTextMarshaler)(nil)}, want: `{"M":null}`},
+		{v: struct{ M string }{"gopher"}, want: `{"m":"gopher"}`},
+		{v: struct{ M Marshaler }{}, want: `{"m":null}`},
+		{v: struct{ M Marshaler }{(*nilJSONMarshaler)(nil)}, want: `{"m":"0zenil0"}`},
+		{v: struct{ M interface{} }{(*nilJSONMarshaler)(nil)}, want: `{"m":null}`},
+		{v: struct{ M encoding.TextMarshaler }{}, want: `{"m":null}`},
+		{v: struct{ M encoding.TextMarshaler }{(*nilTextMarshaler)(nil)}, want: `{"m":"0zenil0"}`},
+		{v: struct{ M interface{} }{(*nilTextMarshaler)(nil)}, want: `{"m":null}`},
 	}
 
 	for _, tt := range testCases {
@@ -626,7 +626,7 @@ func TestEmbeddedBug(t *testing.T) {
 	if err != nil {
 		t.Fatal("Marshal:", err)
 	}
-	want := `{"S":"B"}`
+	want := `{"s":"B"}`
 	got := string(b)
 	if got != want {
 		t.Fatalf("Marshal: got %s want %s", got, want)
@@ -639,7 +639,7 @@ func TestEmbeddedBug(t *testing.T) {
 	if err != nil {
 		t.Fatal("Marshal:", err)
 	}
-	want = `{"A":23}`
+	want = `{"a":23}`
 	got = string(b)
 	if got != want {
 		t.Fatalf("Marshal: got %s want %s", got, want)
@@ -1073,18 +1073,18 @@ func TestMarshalRawMessageValue(t *testing.T) {
 		{&[]interface{}{rawNil}, "[null]", true},
 		{[]interface{}{&rawNil}, "[null]", true},
 		{&[]interface{}{&rawNil}, "[null]", true},
-		{struct{ M RawMessage }{rawNil}, `{"M":null}`, true},
-		{&struct{ M RawMessage }{rawNil}, `{"M":null}`, true},
-		{struct{ M *RawMessage }{&rawNil}, `{"M":null}`, true},
-		{&struct{ M *RawMessage }{&rawNil}, `{"M":null}`, true},
+		{struct{ M RawMessage }{rawNil}, `{"m":null}`, true},
+		{&struct{ M RawMessage }{rawNil}, `{"m":null}`, true},
+		{struct{ M *RawMessage }{&rawNil}, `{"m":null}`, true},
+		{&struct{ M *RawMessage }{&rawNil}, `{"m":null}`, true},
 		{map[string]interface{}{"M": rawNil}, `{"M":null}`, true},
 		{&map[string]interface{}{"M": rawNil}, `{"M":null}`, true},
 		{map[string]interface{}{"M": &rawNil}, `{"M":null}`, true},
 		{&map[string]interface{}{"M": &rawNil}, `{"M":null}`, true},
 		{T1{rawNil}, "{}", true},
-		{T2{&rawNil}, `{"M":null}`, true},
+		{T2{&rawNil}, `{"m":null}`, true},
 		{&T1{rawNil}, "{}", true},
-		{&T2{&rawNil}, `{"M":null}`, true},
+		{&T2{&rawNil}, `{"m":null}`, true},
 
 		// Test with empty, but non-nil, RawMessage.
 		{rawEmpty, "", false},
@@ -1117,18 +1117,18 @@ func TestMarshalRawMessageValue(t *testing.T) {
 		{&[]interface{}{rawText}, `["foo"]`, true}, // Issue6458
 		{[]interface{}{&rawText}, `["foo"]`, true},
 		{&[]interface{}{&rawText}, `["foo"]`, true},
-		{struct{ M RawMessage }{rawText}, `{"M":"foo"}`, true}, // Issue6458
-		{&struct{ M RawMessage }{rawText}, `{"M":"foo"}`, true},
-		{struct{ M *RawMessage }{&rawText}, `{"M":"foo"}`, true},
-		{&struct{ M *RawMessage }{&rawText}, `{"M":"foo"}`, true},
+		{struct{ M RawMessage }{rawText}, `{"m":"foo"}`, true}, // Issue6458
+		{&struct{ M RawMessage }{rawText}, `{"m":"foo"}`, true},
+		{struct{ M *RawMessage }{&rawText}, `{"m":"foo"}`, true},
+		{&struct{ M *RawMessage }{&rawText}, `{"m":"foo"}`, true},
 		{map[string]interface{}{"M": rawText}, `{"M":"foo"}`, true},  // Issue6458
 		{&map[string]interface{}{"M": rawText}, `{"M":"foo"}`, true}, // Issue6458
 		{map[string]interface{}{"M": &rawText}, `{"M":"foo"}`, true},
 		{&map[string]interface{}{"M": &rawText}, `{"M":"foo"}`, true},
-		{T1{rawText}, `{"M":"foo"}`, true}, // Issue6458
-		{T2{&rawText}, `{"M":"foo"}`, true},
-		{&T1{rawText}, `{"M":"foo"}`, true},
-		{&T2{&rawText}, `{"M":"foo"}`, true},
+		{T1{rawText}, `{"m":"foo"}`, true}, // Issue6458
+		{T2{&rawText}, `{"m":"foo"}`, true},
+		{&T1{rawText}, `{"m":"foo"}`, true},
+		{&T2{&rawText}, `{"m":"foo"}`, true},
 	}
 
 	for i, tt := range tests {
@@ -1168,7 +1168,7 @@ func TestMarshalUncommonFieldNames(t *testing.T) {
 	if err != nil {
 		t.Fatal("Marshal:", err)
 	}
-	want := `{"A0":0,"À":0,"Aβ":0}`
+	want := `{"a0":0,"À":0,"aβ":0}`
 	got := string(b)
 	if got != want {
 		t.Fatalf("Marshal: got %s want %s", got, want)

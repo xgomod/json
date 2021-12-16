@@ -1208,6 +1208,30 @@ func (x byIndex) Less(i, j int) bool {
 	return len(x[i].index) < len(x[j].index)
 }
 
+// 首字母小写
+func camelCase(str string) string {
+	l := len(str)
+	if l == 0 {
+		return str
+	}
+	chars := []rune(str)
+	if !isUpper(chars[0]) {
+		return str
+	}
+	if l == 1 {
+		return string(chars[0] + 32)
+	}
+	if isUpper(chars[1]) {
+		return str
+	}
+	chars[0] += 32
+	return string(chars)
+}
+
+func isUpper(char rune) bool {
+	return char >= 'A' && char <= 'Z'
+}
+
 // typeFields returns a list of fields that JSON should recognize for the given type.
 // The algorithm is breadth-first search over the set of structs to include - the top struct
 // and then any reachable anonymous structs.
@@ -1301,7 +1325,12 @@ func typeFields(t reflect.Type) structFields {
 						omitEmpty: opts.Contains("omitempty"),
 						quoted:    quoted,
 					}
-					field.nameBytes = []byte(field.name)
+					fixName := name
+					if !tagged {
+						fixName = camelCase(fixName)
+					}
+					field.nameBytes = []byte(fixName)
+					// field.nameBytes = []byte(field.name)
 					field.equalFold = foldFunc(field.nameBytes)
 
 					// Build nameEscHTML and nameNonEsc ahead of time.
@@ -1310,7 +1339,8 @@ func typeFields(t reflect.Type) structFields {
 					HTMLEscape(&nameEscBuf, field.nameBytes)
 					nameEscBuf.WriteString(`":`)
 					field.nameEscHTML = nameEscBuf.String()
-					field.nameNonEsc = `"` + field.name + `":`
+					// field.nameNonEsc = `"` + field.name + `":`
+					field.nameNonEsc = `"` + fixName + `":`
 
 					fields = append(fields, field)
 					if count[f.typ] > 1 {
