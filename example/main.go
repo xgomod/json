@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"json"
+
+	"github.com/xgomod/json"
 )
 
 type User struct {
