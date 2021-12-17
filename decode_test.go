@@ -1475,22 +1475,22 @@ var allValueIndent = `{
 	"bar2": "foo2",
 	"intStr": "42",
 	"uintptrStr": "44",
-	"PBool": null,
-	"PInt": null,
-	"PInt8": null,
-	"PInt16": null,
-	"PInt32": null,
-	"PInt64": null,
-	"PUint": null,
-	"PUint8": null,
-	"PUint16": null,
-	"PUint32": null,
-	"PUint64": null,
-	"PUintptr": null,
-	"PFloat32": null,
-	"PFloat64": null,
+	"pbool": null,
+	"pint": null,
+	"pint8": null,
+	"pint16": null,
+	"pint32": null,
+	"pint64": null,
+	"puint": null,
+	"puint8": null,
+	"puint16": null,
+	"puint32": null,
+	"puint64": null,
+	"puintptr": null,
+	"pfloat32": null,
+	"pfloat64": null,
 	"string": "16",
-	"PString": null,
+	"pstring": null,
 	"map": {
 		"17": {
 			"tag": "tag17"
@@ -1505,8 +1505,8 @@ var allValueIndent = `{
 		},
 		"20": null
 	},
-	"PMap": null,
-	"PMapP": null,
+	"pmap": null,
+	"pmapP": null,
 	"emptyMap": {},
 	"nilMap": null,
 	"slice": [
@@ -1526,8 +1526,8 @@ var allValueIndent = `{
 			"tag": "tag23"
 		}
 	],
-	"PSlice": null,
-	"PSliceP": null,
+	"pslice": null,
+	"psliceP": null,
 	"emptySlice": [],
 	"nilSlice": null,
 	"stringSlice": [
@@ -1539,12 +1539,12 @@ var allValueIndent = `{
 	"small": {
 		"tag": "tag30"
 	},
-	"PSmall": {
+	"psmall": {
 		"tag": "tag31"
 	},
-	"PPSmall": null,
+	"ppSmall": null,
 	"interface": 5.2,
-	"PInterface": null
+	"pinterface": null
 }`
 
 var allValueCompact = strings.Map(noSpace, allValueIndent)
@@ -1568,25 +1568,25 @@ var pallValueIndent = `{
 	"bar2": "",
         "intStr": "0",
 	"uintptrStr": "0",
-	"PBool": true,
-	"PInt": 2,
-	"PInt8": 3,
-	"PInt16": 4,
-	"PInt32": 5,
-	"PInt64": 6,
-	"PUint": 7,
-	"PUint8": 8,
-	"PUint16": 9,
-	"PUint32": 10,
-	"PUint64": 11,
-	"PUintptr": 12,
-	"PFloat32": 14.1,
-	"PFloat64": 15.1,
+	"pbool": true,
+	"pint": 2,
+	"pint8": 3,
+	"pint16": 4,
+	"pint32": 5,
+	"pint64": 6,
+	"puint": 7,
+	"puint8": 8,
+	"puint16": 9,
+	"puint32": 10,
+	"puint64": 11,
+	"puintptr": 12,
+	"pfloat32": 14.1,
+	"pfloat64": 15.1,
 	"string": "",
-	"PString": "16",
+	"pstring": "16",
 	"map": null,
 	"mapP": null,
-	"PMap": {
+	"pmap": {
 		"17": {
 			"tag": "tag17"
 		},
@@ -1594,7 +1594,7 @@ var pallValueIndent = `{
 			"tag": "tag18"
 		}
 	},
-	"PMapP": {
+	"pmapP": {
 		"19": {
 			"tag": "tag19"
 		},
@@ -1604,7 +1604,7 @@ var pallValueIndent = `{
 	"nilMap": null,
 	"slice": null,
 	"sliceP": null,
-	"PSlice": [
+	"pslice": [
 		{
 			"tag": "tag20"
 		},
@@ -1612,7 +1612,7 @@ var pallValueIndent = `{
 			"tag": "tag21"
 		}
 	],
-	"PSliceP": [
+	"psliceP": [
 		{
 			"tag": "tag22"
 		},
@@ -1628,12 +1628,12 @@ var pallValueIndent = `{
 	"small": {
 		"tag": ""
 	},
-	"PSmall": null,
-	"PPSmall": {
+	"psmall": null,
+	"ppSmall": {
 		"tag": "tag31"
 	},
 	"interface": null,
-	"PInterface": 5.2
+	"pinterface": 5.2
 }`
 
 var pallValueCompact = strings.Map(noSpace, pallValueIndent)

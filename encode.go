@@ -1208,28 +1208,51 @@ func (x byIndex) Less(i, j int) bool {
 	return len(x[i].index) < len(x[j].index)
 }
 
-// 首字母小写
-func camelCase(str string) string {
+func lowerCamelCase(str string) string {
 	l := len(str)
 	if l == 0 {
 		return str
 	}
 	chars := []rune(str)
-	if !isUpper(chars[0]) {
-		return str
-	}
-	if l == 1 {
-		return string(chars[0] + 32)
-	}
-	if isUpper(chars[1]) {
+	if checkCase(chars[0]) != 1 {
 		return str
 	}
 	chars[0] += 32
+	if l == 1 {
+		return string(chars)
+	}
+	for i := 1; i < l; i++ {
+		cas := checkCase(chars[i])
+		if cas == 1 {
+			if i > 1 {
+				chars[i-1] += 32
+			}
+			if i+1 == l {
+				chars[i] += 32
+			}
+		} else if cas == 2 {
+			if i == 2 {
+				chars[1] += 32
+			}
+			break
+		} else if cas == -1 {
+			if i > 1 {
+				chars[i-1] += 32
+			}
+			break
+		}
+	}
 	return string(chars)
 }
 
-func isUpper(char rune) bool {
-	return char >= 'A' && char <= 'Z'
+func checkCase(char rune) int {
+	if char >= 'A' && char <= 'Z' {
+		return 1
+	}
+	if char >= 'a' && char <= 'z' {
+		return 2
+	}
+	return -1
 }
 
 // typeFields returns a list of fields that JSON should recognize for the given type.
@@ -1327,7 +1350,7 @@ func typeFields(t reflect.Type) structFields {
 					}
 					fixName := name
 					if !tagged {
-						fixName = camelCase(fixName)
+						fixName = lowerCamelCase(fixName)
 					}
 					field.nameBytes = []byte(fixName)
 					// field.nameBytes = []byte(field.name)

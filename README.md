@@ -1,3 +1,12 @@
+# Golang JSON Module with `lowerCamelCase`
+
+Base on [official JSON package](https://github.com/golang/go/tree/master/src/encoding/json), auto `lowerCamelCase` struct field if no json tag defined.
+No effect on map, only for struct.
+More detail could be found at `func lowerCamelCase` in [encode.go](encode.go).
+
+## Usage
+
+```go
 package main
 
 import (
@@ -58,3 +67,6 @@ func main() {
 	json.Unmarshal([]byte(jsonStr), &user2)
 	fmt.Println(user2)
 }
+```
+
+[example source code](example/main.go)
